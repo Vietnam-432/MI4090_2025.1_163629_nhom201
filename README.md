@@ -5,6 +5,7 @@
 ## Công nghệ sử dụng
 * Ngôn ngữ: C# (WinForms/WPF/ASP.NET)
 * Cơ sở dữ liệu: SQL Lite
+  
 #Lưu ý:
   Có một file Data mẫu DATA.DB ở đầu.
   Khi không có dữ liệu ban đầu thì ứng dụng mặc định tạo 1 tài khoản admin có username: admin và password: admin
