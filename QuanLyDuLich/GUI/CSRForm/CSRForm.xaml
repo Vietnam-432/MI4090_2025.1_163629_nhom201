@@ -1,0 +1,190 @@
+﻿<UserControl x:Class="QuanLyDuLich.GUI.CSRForm.CSRForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QuanLyDuLich.GUI.CSRForm"
+             xmlns:view="clr-namespace:QuanLyDuLich.GUI.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1100" Background="#F4F7F9">
+
+    <UserControl.Resources>
+        <!-- Bộ chuyển đổi trạng thái nút Hủy -->
+        <local:StatusToEnabledConverter x:Key="StatusToEnabledConverter"/>
+
+        <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Style ẩn các nút nghiệp vụ quản trị trong các View con -->
+        <Style x:Key="HideActionButtonsStyle" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="Content" Value="+ Thêm Mới">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="Content" Value="✏️ Sửa">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="Content" Value="🗑️ Xóa">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="Name" Value="btnAdd">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="Name" Value="btnEdit">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <Trigger Property="Name" Value="btnDelete">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style ẩn tiêu đề quản lý trong ScheduleView -->
+        <Style x:Key="HideScheduleTitleStyle" TargetType="TextBlock">
+            <Style.Triggers>
+                <Trigger Property="Text" Value="QUẢN LÝ LỊCH TRÌNH &amp; PHÂN CÔNG GUIDE">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Background="#2C3E50" Grid.Row="0" Padding="20,0">
+            <Grid>
+                <!-- Thông tin nhân viên bên trái -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="HỆ THỐNG CHĂM SÓC KHÁCH HÀNG" Style="{StaticResource HeaderTextStyle}"/>
+                    <Separator Margin="20,10" Background="White" Opacity="0.3"/>
+                    <TextBlock x:Name="lblCSRName" Text="Nhân viên: ..." Foreground="#ECF0F1" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+
+                <!-- Nút Đăng xuất bên phải -->
+                <Button Content="🚪 Đăng xuất" Click="BtnLogout_Click"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Width="120" Height="32" Background="Transparent" Foreground="#E74C3C" 
+                        BorderThickness="0" FontSize="13" Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="5" BorderBrush="#E74C3C" BorderThickness="1">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E74C3C"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Tabs chức năng chính -->
+        <TabControl Grid.Row="1" Margin="10">
+
+            <!-- Tab 1: Chỉ xem danh mục Tour -->
+            <TabItem Header="Danh mục Tour">
+                <view:TourView>
+                    <view:TourView.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource HideActionButtonsStyle}"/>
+                    </view:TourView.Resources>
+                </view:TourView>
+            </TabItem>
+
+            <!-- Tab 2: Chỉ xem Lịch khởi hành -->
+            <TabItem Header="Lịch khởi hành">
+                <view:ScheduleView>
+                    <view:ScheduleView.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource HideActionButtonsStyle}"/>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource HideScheduleTitleStyle}"/>
+                    </view:ScheduleView.Resources>
+                </view:ScheduleView>
+            </TabItem>
+
+            <!-- Tab 3: Quản lý thông tin Khách hàng -->
+            <TabItem Header="Khách hàng">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel LastChildFill="False" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="txtSearchCustomer" Width="250" Margin="0,0,10,0" VerticalContentAlignment="Center" Padding="5"/>
+                            <Button Content="Tìm khách" Click="BtnSearchCustomer_Click" Width="100" Background="#3498DB" Foreground="White" BorderThickness="0"/>
+                        </StackPanel>
+                        <Button DockPanel.Dock="Right" Content="+ Thêm khách hàng mới" Click="BtnAddCustomer_Click" Background="#27AE60" Foreground="White" Width="180" BorderThickness="0"/>
+                    </DockPanel>
+
+                    <DataGrid x:Name="dgCustomers" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Background="White">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã KH" Binding="{Binding Id}" Width="80"/>
+                            <DataGridTextColumn Header="Họ Tên" Binding="{Binding FullName}" Width="*"/>
+                            <DataGridTextColumn Header="SĐT" Binding="{Binding PhoneNumber}" Width="120"/>
+                            <DataGridTextColumn Header="CCCD" Binding="{Binding CitizenId}" Width="120"/>
+                            <DataGridTemplateColumn Header="Thao tác" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Đặt Tour" Click="BtnQuickBook_Click" Background="#E67E22" Foreground="White" BorderThickness="0" Padding="5,2"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- Tab 4: Quản lý lịch sử Đặt Tour -->
+            <TabItem Header="Đơn đặt Tour">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Trạng thái:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <ComboBox x:Name="cbBookingStatus" Width="150" SelectedIndex="0">
+                            <ComboBoxItem Content="Tất cả" Tag="All"/>
+                            <ComboBoxItem Content="Chờ xử lý" Tag="Pending"/>
+                            <ComboBoxItem Content="Đã thanh toán" Tag="Paid"/>
+                            <ComboBoxItem Content="Đã hủy" Tag="Cancelled"/>
+                        </ComboBox>
+                        <Button Content="Lọc đơn" Click="BtnFilterBooking_Click" Margin="10,0" Width="100" Background="#34495E" Foreground="White" BorderThickness="0"/>
+                    </StackPanel>
+
+                    <DataGrid x:Name="dgBookings" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Background="White">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã Đơn" Binding="{Binding Id}" Width="100"/>
+                            <DataGridTextColumn Header="Khách Hàng" Binding="{Binding Customer.FullName}" Width="*"/>
+                            <DataGridTextColumn Header="Ngày Đặt" Binding="{Binding BookDate, StringFormat=dd/MM/yyyy}" Width="100"/>
+                            <DataGridTextColumn Header="Tổng Tiền" Binding="{Binding TotalAmount, StringFormat={}{0:N0} VNĐ}" Width="130"/>
+                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="100"/>
+                            <DataGridTemplateColumn Header="Hủy đơn" Width="80">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Hủy" Click="BtnCancelBooking_Click" Background="#E74C3C" Foreground="White" BorderThickness="0"
+                                                IsEnabled="{Binding Status, Converter={StaticResource StatusToEnabledConverter}}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

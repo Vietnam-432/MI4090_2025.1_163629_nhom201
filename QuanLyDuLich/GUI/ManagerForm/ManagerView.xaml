@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="QuanLyDuLich.GUI.ManagerForm.ManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:QuanLyDuLich.GUI.ManagerForm"
+             mc:Ignorable="d" 
+             d:DesignHeight="650" d:DesignWidth="1100">
+    <UserControl.Resources>
+        <Style x:Key="MenuButtonStyle" TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#BDC3C7"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="20,15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Margin="0,5">
+                            <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#34495E"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="#1ABC9C"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#F5F6FA">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar Menu -->
+        <Border Grid.Column="0" Background="#2C3E50" CornerRadius="0,20,20,0">
+            <StackPanel Margin="15">
+                <!-- Logo / Title -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,50">
+                    <TextBlock Text="TRAVEL" Foreground="White" FontSize="24" FontWeight="Bold"/>
+                    <TextBlock Text=" MANAGER" Foreground="#1ABC9C" FontSize="24" FontWeight="Bold"/>
+                </StackPanel>
+
+                <!-- Menu Items -->
+                <!-- x:Name="rdTour" để khớp với logic trong C# -->
+                <RadioButton x:Name="rdTour" Content="📦 QUẢN LÝ TOUR" Tag="Tour"
+                             Style="{StaticResource MenuButtonStyle}" Checked="Menu_Checked"/>
+
+                <RadioButton Content="📅 LỊCH TRÌNH" Tag="Schedule"
+                             Style="{StaticResource MenuButtonStyle}" Checked="Menu_Checked"/>
+
+                <RadioButton Content="🧑‍✈️ PHÂN CÔNG HƯỚNG DẪN VIÊN" Tag="Guide"
+                             Style="{StaticResource MenuButtonStyle}" Checked="Menu_Checked"/>
+
+                <RadioButton Content="🏢 NHÀ CUNG CẤP" Tag="Vendor"
+                             Style="{StaticResource MenuButtonStyle}" Checked="Menu_Checked"/>
+
+                <RadioButton Content="👥 TÀI KHOẢN NV" Tag="User"
+                             Style="{StaticResource MenuButtonStyle}" Checked="Menu_Checked"/>
+
+                <Separator Background="#7F8C8D" Margin="10,30"/>
+
+                <Button Content="🚪 Đăng xuất" Click="BtnLogout_Click"
+                        Background="Transparent" Foreground="#E74C3C" BorderThickness="0" 
+                        FontSize="15" Cursor="Hand" HorizontalAlignment="Left" Margin="20,0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Border Grid.Column="1" Margin="20" Background="White" CornerRadius="15">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" Opacity="0.05" ShadowDepth="5" Color="Black"/>
+            </Border.Effect>
+
+            <!-- Nơi hiển thị các View con -->
+            <ContentControl x:Name="MainContent" Margin="5"/>
+        </Border>
+    </Grid>
+</UserControl>

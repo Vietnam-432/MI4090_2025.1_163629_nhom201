@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="QuanLyDuLich.GUI.View.VendorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1000">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Tiêu đề -->
+        <TextBlock Text="QUẢN LÝ NHÀ CUNG CẤP" 
+                   FontSize="24" FontWeight="Bold" Foreground="#2C3E50" 
+                   Margin="20,20,0,10"/>
+
+        <!-- Thanh công cụ -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="20,0,20,10">
+            <Button x:Name="btnAdd" Content="➕ Thêm Mới" Click="BtnAdd_Click"
+                    Background="#3498DB" Foreground="White" Padding="15,8" Margin="0,0,10,0" BorderThickness="0"/>
+            <Button x:Name="btnEdit" Content="✏️ Chỉnh Sửa" Click="BtnEdit_Click"
+                    Background="#F39C12" Foreground="White" Padding="15,8" Margin="0,0,10,0" BorderThickness="0"/>
+            <Button x:Name="btnDelete" Content="🗑️ Xóa" Click="BtnDelete_Click"
+                    Background="#E74C3C" Foreground="White" Padding="15,8" Margin="0,0,10,0" BorderThickness="0"/>
+
+            <!-- [MỚI] Nút Xem Dịch Vụ -->
+            <Button x:Name="btnViewService" Content="📦 Xem Dịch Vụ" Click="BtnViewService_Click"
+                    Background="#8E44AD" Foreground="White" Padding="15,8" BorderThickness="0"/>
+        </StackPanel>
+
+        <!-- Danh sách dữ liệu -->
+        <DataGrid x:Name="dgData" Grid.Row="2" Margin="20,0,20,20"
+                  AutoGenerateColumns="False" IsReadOnly="True"
+                  SelectionMode="Single" HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal" Background="WhiteSmoke" RowHeaderWidth="0">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="Background" Value="#ECF0F1"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="10"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tên Nhà Cung Cấp" Binding="{Binding VendorName}" Width="*"/>
+                <DataGridTextColumn Header="Loại hình" Binding="{Binding VendorType}" Width="150"/>
+                <DataGridTextColumn Header="Số điện thoại" Binding="{Binding PhoneNumber}" Width="150"/>
+                <DataGridTextColumn Header="Địa chỉ" Binding="{Binding Address}" Width="2*"/>
+
+                <!-- Hiển thị số lượng dịch vụ đang cung cấp -->
+                <DataGridTemplateColumn Header="SL Dịch Vụ" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ProvidedService.Count, StringFormat='{}{0} dịch vụ'}" 
+                                       FontStyle="Italic" Foreground="Gray" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
